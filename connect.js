@@ -1,11 +1,11 @@
-const mysql = require('mysql')
+const mysql = require('mysql2')
 
 const connect = mysql.createConnection({
-    host: 'bscqmjc4ysrlserxjroq-mysql.services.clever-cloud.com',
+    host: 'database-1.cb4kmmrfdifd.ap-southeast-2.rds.amazonaws.com',
     port: '3306',
-    user: 'uykzpsxgtd5qenug',
-    password: 'RUlce9PGjptuAIh0fXMU',
-    database: 'bscqmjc4ysrlserxjroq'
+    user: 'root',
+    password: 'password',
+    database: 'voting system'
 })
 
 connect.connect(error => {
