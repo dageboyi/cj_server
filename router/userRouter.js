@@ -5,6 +5,7 @@ const connect = require('../connect')
 const md5 = require('md5')
 const userRouter = express.Router()
 const secret = 'vote' //自定义密钥
+const baseURL = 'https://cj-interview-server.onrender.com';
 
 const storage = multer.diskStorage({
     // 上传文件的目录
@@ -84,7 +85,7 @@ userRouter.post('/register', (req, res) => {
     connect.query(countSql, countSqlParams, (error, r, fields) => {
         if(r[0].count === 0) {
             const sql = 'insert into users(username, password, sex, avatar, count, voteCount, answerCount) values(?, ?, ?, ?, 0, 0, 0)'
-            const avatar = sex === 'male' ? '/images/default.webp' : '/images/mary.webp'
+            const avatar = sex === 'male' ? `${baseURL}/images/default.webp` : `${baseURL}/images/mary.webp`
             const sqlParams = [username, md5(password), sex, avatar]
             connect.query(sql, sqlParams, (error, result, fields) => {
                 if(error) {
@@ -135,11 +136,11 @@ userRouter.post('/init', (req, res) => {
 // 头像
 userRouter.post('/avatar', upload.single('file'), (req, res) => {
     const { userId } = req.body
-    connect.query('update users set avatar = ? where id = ?', ['/images/' + req.file.filename, userId], (error, result) => {
+    connect.query('update users set avatar = ? where id = ?', [`${baseURL}/images/` + req.file.filename, userId], (error, result) => {
         res.send({
             code: 200,
             message: 'Upload successful',
-            data: '/images/' + req.file.filename
+            data: baseURL + '/images/' + req.file.filename
         })
     })
     
